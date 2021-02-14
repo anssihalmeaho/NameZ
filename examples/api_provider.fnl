@@ -15,7 +15,7 @@ end
 my-addr = 'localhost:9902'
 
 main = proc()
-		ok err server = call(stdrpc.new-server my-addr):
+	ok err server = call(stdrpc.new-server my-addr):
 	_ = call(stddbc.assert ok err)
 
 	_ = call(stdrpc.register server 'my-service' my-handler)
