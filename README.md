@@ -8,14 +8,14 @@ NameZ implements name service for FunL RPC API endpoints.
 It works in following way:
 
 * API provider registers service to NameZ: service name (string) -> address (IP:port, string)
-* AP (client) asks API endpoint address by serice name (gets address of provider)
+* API client asks API endpoint address by service name (gets address of provider)
 
 ## NameZ components
 
-NameZ solution consists following parts:
+NameZ solution consists of following parts:
 
-1. **namezlib** is client and provider interface to NameZ
-2. **namezerver** is server process which receives API provider registrations (via RPC)
+1. **namezlib** is interface for client and provider to NameZ
+2. **namezerver** is server process which receives registrations (from API provider via RPC)
 3. **valuserver** serving as store service endpoint data. See [valuserver](https://github.com/anssihalmeaho/valuserver) for more information.
 
 API provider calls **namezlib** for adding service endpoint.
@@ -143,7 +143,7 @@ end
 my-addr = 'localhost:9902'
 
 main = proc()
-		ok err server = call(stdrpc.new-server my-addr):
+	ok err server = call(stdrpc.new-server my-addr):
 	_ = call(stddbc.assert ok err)
 
 	_ = call(stdrpc.register server 'my-service' my-handler)
@@ -238,7 +238,7 @@ rcall -> list(true, '', map('counter' : 11))
 
 ## To do
 There should be supervision so that **namezerver** would supervise existence of API provider.
-This could be done **namezlib** implementing special supervision RPC API which **namzerver** would call (RPC).
+This could be done **namezlib** implementing special supervision RPC API which **namezerver** would call (RPC).
 In case of supervision failure service data would be removed from **valuserver**.
 
 This is to be done in future.
