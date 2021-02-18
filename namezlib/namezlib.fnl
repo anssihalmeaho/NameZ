@@ -32,6 +32,16 @@ register-service = proc(service-name addr)
 	)
 end
 
+# service provider unregisters service
+unregister-service = proc(service-name)
+	px = call(stdrpc.new-proxy registry-addr)
+	call-ok call-err retval = call(stdrpc.rcall px 'unreg-service-provider' service-name):
+	if( call-ok
+		retval
+		list(false call-err)
+	)
+end
+
 # init client
 init-client = proc()
 	client = call(valuview.new-view valuserver-addr 'apis' func(item) true end)

@@ -19,6 +19,20 @@ reg-service-provider = proc(vs-client)
 	end
 end
 
+unreg-service-provider = proc(vs-client)
+	proc(service-name)
+		#_ = print(sprintf('unreg-service-provider: %s' service-name))
+
+		# lets take previous values for same servive away first (if any)
+		take-function = eval(sprintf('func(x) eq(get(x \'service-name\') \'%s\') end' service-name))
+		ok err taken = call(valulib.take-values vs-client 'apis' take-function):
+		and(
+			ok
+			gt(len(taken) 0)
+		)
+	end
+end
+
 just-waiting = proc()
 	call(proc()
 		while( call(proc() _ = call(stdtime.sleep 10) true end) 'none')
@@ -40,6 +54,7 @@ main = proc()
 	_ = call(stddbc.assert ok err)
 
 	_ = call(stdrpc.register server 'reg-service-provider' call(reg-service-provider vs-client))
+	_ = call(stdrpc.register server 'unreg-service-provider' call(unreg-service-provider vs-client))
 	call(just-waiting)
 end
 
