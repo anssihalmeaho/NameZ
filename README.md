@@ -64,6 +64,15 @@ API provider registers service endpoint. Service name (string) and address (stri
 call(register-service <service-name:string> <address:string>) -> list(<ok:bool> <error-text:string>)
 ```
 
+#### unregister-service
+API provider unregisters service endpoint. Service name (string) is given as argument.
+
+```
+call(unregister-service <service-name:string>) -> bool
+```
+
+Return value is true if the service was found, false if it was not found.
+
 ## Setup
 
 ### Setting up
